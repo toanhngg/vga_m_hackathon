@@ -2,6 +2,8 @@ from flask import Flask, request, render_template, redirect, url_for
 
 app = Flask(__name__, static_url_path='/static')
 
+
+
 # Kết nối đến cơ sở dữ liệu SQL Server
 import pyodbc
 
@@ -38,6 +40,10 @@ def login():
         # Đăng nhập không thành công
         # print("Đăng nhập không thành công!")
         return "Đăng nhập không thành công!"
+    
+@app.route('/profile1')
+def profile():
+    return render_template('profile.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
