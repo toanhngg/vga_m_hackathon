@@ -1,9 +1,13 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for ,session
+from flask_session import Session
 
 app = Flask(__name__, static_url_path='/static')
 
-
-
+app.config['SESSION_TYPE'] = 'filesystem'  # Loại session lưu trữ trên filesystem
+app.config['SESSION_PERMANENT'] = False  # Sử dụng session phiên làm việc
+app.config['SESSION_USE_SIGNER'] = True  # Sử dụng signer để bảo vệ session
+app.secret_key = 'your_secret_key'  # Đặt secret key cho ứng dụng Flask
+Session(app)
 # Kết nối đến cơ sở dữ liệu SQL Server
 import pyodbc
 
@@ -24,6 +28,7 @@ def login_form():
 @app.route('/login', methods=['POST'])
 def login():
     email = request.form['email']
+
     print(email)
     password = request.form['password']
     print(password)
@@ -35,6 +40,7 @@ def login():
     if user:
         # Đăng nhập thành công
         # print("Đăng nhập thành công!")
+        session['email'] = email
         return render_template('homepage.html')
     else:
         # Đăng nhập không thành công
@@ -43,6 +49,7 @@ def login():
     
 @app.route('/profile1')
 def profile():
+   
     return render_template('profile.html')
 
 if __name__ == '__main__':
